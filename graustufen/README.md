@@ -31,5 +31,14 @@ Gehen Sie wie folgt vor:
 4. Berechnen Sie die FLOP/s, die Ihr Algorithmus erreicht hat und geben Sie das Ergebnis aus an Stelle `//TODO Ausgabe FLOP/s`
 5. Vergleichen Sie die erreichte Zahl mit der theoretischen Single-Core Leistung Ihrer CPU. Warum liegt der Wert darunter?
 
+Kompilieren Sie das Programm mit gcc:
+```
+$ gcc -o graustufen-loop.out graustufen-loop.c
+...
+$ ./graustufen-loop.out
+```
 
+## NumPy
+
+Siehe [Jupyter-Notebook](graustufen-numpy.ipynb).
 

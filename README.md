@@ -19,7 +19,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
             <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/graustufen">Übung/Warmup: Konvertierung eines Bilds in Graustufen</a></li>
             </ul></td>
     <td><ul><li>2er Teams bilden. Bevorzugt mit/ohne C/Python-Erfahrung</li>
-            <li>C lernen/auffrischen, z.B. <a href="https://www.youtube.com/watch?v=3lQEunpmtRA">C Programming (25 Minuten)</a>, <a href="https://youtu.be/mw1qsMieK5c">C Pointer (10 Minuten)</a> und <a href="">https://youtu.be/wadj1UH2gVQ</a></li></ul><td>
+            <li>C lernen/auffrischen, z.B. <a href="https://www.youtube.com/watch?v=3lQEunpmtRA">C Programming (25 Minuten)</a>, <a href="https://youtu.be/mw1qsMieK5c">C Pointer (10 Minuten)</a> und <a href="https://youtu.be/wadj1UH2gVQ">Dynamic Memory in C (10 Minuten)</a></li></ul></td>
     </tr>
     <tr>
     <td>2</td><td>2</td>
@@ -28,7 +28,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
         <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/caches">Caches</a></li>
             <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/simd">SIMD</a></li>
             <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/roofline">Roofline-Modell</a></li></ul></td>
-            <td>Python lernen/auffrischen, z.B. Skript "Data Analytics" Kapitel <a href="https://speiser.hft-pages.io/vl-data-analytics/python-intro/python-intro-live.html">"Python Grundlagen"</a> und >a href="https://speiser.hft-pages.io/vl-data-analytics/data-understanding/10-numpy.html">"NumPy"</a>. <a href="https://www.youtube.com/watch?v=HW29067qVWk">YouTube: Jupyter Notebook</a> </td>
+            <td>Python lernen/auffrischen, z.B. Skript "Data Analytics" Kapitel <a href="https://speiser.hft-pages.io/vl-data-analytics/python-intro/python-intro-live.html">"Python Grundlagen"</a> und <a href="https://speiser.hft-pages.io/vl-data-analytics/data-understanding/10-numpy.html">"NumPy"</a>. <a href="https://www.youtube.com/watch?v=HW29067qVWk">YouTube: Jupyter Notebook</a> </td>
     </tr>
     <tr>
         <td>3</td><td>3</td>
