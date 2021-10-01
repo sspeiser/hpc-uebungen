@@ -1,6 +1,6 @@
 # High-Performance Computing (HPC): Skript und Übungen
 
-In diesem Repository befinden sich die Übungen für die Vorlesung High-Performance Computing (HPC) an der [HFT Stuttgart](https://www.hft-stuttgart.de) von [Sebastian Speiser](https://speiserweb.de/sebastian/). Die Vorlesung wird von einem Skript begleitet, das die Übungen verlinkt: [Skript](https://sspeiser.github.io/hpc-doc/intro.html).
+In diesem Repository befinden sich die Übungen für die Vorlesung High-Performance Computing (HPC) an der [HFT Stuttgart](https://www.hft-stuttgart.de) von [Sebastian Speiser](https://www.hft-stuttgart.de/p/sebastian-speiser). Die Vorlesung wird von einem Skript begleitet, das die Übungen verlinkt: [Skript](https://sspeiser.github.io/hpc-doc/intro.html).
 
 ## Ablauf der Vorlesung (WS2021/2022) - WORK IN PROGRESS
 
