@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <OpenCL/opencl.h>
+// #include <OpenCL/opencl.h>
+#include <CL/cl.h>
 
 int main(int argc, char* const argv[]) {
     cl_uint num_devices, i;

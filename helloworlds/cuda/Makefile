@@ -1,3 +1,3 @@
 # Windows
 all:
-	nvcc hellocuda.c
+	nvcc hellocuda.cu

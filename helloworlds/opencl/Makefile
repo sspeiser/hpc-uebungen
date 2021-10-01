@@ -6,5 +6,5 @@
 
 # Windows
 all:
-	gcc -I$(CUDA_PATH)/include -L$(CUDA_PATH)/lib/x64 -lOpenCL -o helloopencl.exe helloopencl.c
-	gcc -I$(CUDA_PATH)/include -L$(CUDA_PATH)/lib/x64 -lOpenCL -o dumpcl.exe dumpcl.c
+	gcc -I"$(CUDA_PATH)/include" -L"$(CUDA_PATH)/lib/x64" -o helloopencl.exe helloopencl.c -lOpenCL 
+	gcc -I"$(CUDA_PATH)/include" -L"$(CUDA_PATH)/lib/x64" -o dumpcl.exe dumpcl.c -lOpenCL 
