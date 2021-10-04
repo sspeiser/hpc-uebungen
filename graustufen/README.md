@@ -33,7 +33,7 @@ Gehen Sie wie folgt vor:
 
 Kompilieren Sie das Programm mit gcc:
 ```
-$ gcc -o graustufen-loop.out graustufen-loop.c
+$ gcc -o graustufen-loop.out graustufen-loop.c -lm
 ...
 $ ./graustufen-loop.out
 ```
