@@ -39,7 +39,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
             -
         </td>
     </tr>
-    <tr>
+    <!-- <tr>
         <td>3</td><td>4</td>
         <td><b>Shared Memory mit OpenMP - I</b><br />
         <a href="https://sspeiser.github.io/hpc-doc/sharedmemory.html">Skript "Shared Memory mit OpenMP: Übersicht"</a> mit Übungen:
@@ -57,7 +57,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
             -
         </td>
     </tr>
-    <tr>
+    <tr> -->
         <td>5-12</td><td>TBD</td>
         <td>Distributed Memory, Data Parallel, GPU, ggfs. Spark/NumPy/TensorFlow, Parallele Algorithmen, Projekte/Anwendungen</td>
         <td>TBD</td>
