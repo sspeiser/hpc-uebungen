@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <math.h>
 
 #define X 8192
 #define Y 8192
@@ -104,7 +105,7 @@ int main()
 
     for(i=0;i<X;i++) {
         for(j=0;j<X;j++) {
-            if((a[i][j] - 3.0) * 1000.0 > 0.1) {
+            if(fabs(a[i][j] - 3.0) * 1000.0 > 0.1) {
                 printf("ERROR\n");
                 exit(-1);
             }

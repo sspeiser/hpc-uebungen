@@ -6,9 +6,11 @@ Kompilieren Sie das Programm und führen es aus:
 ```
 $ gcc matrixadd.c
 ...
+# Windows
+$ a.exe
+...
+# Unix
 $ ./a.out
-# oder unter Windows ggfs.:
-$ ./a.exe
 ...
 ```
 Das Programm gibt die erreichten MFLOP/s aus - nur bezogen auf die Additionen.
