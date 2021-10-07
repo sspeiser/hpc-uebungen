@@ -3,8 +3,10 @@
 
 int main()
 {
+    printf("Hello\n");
     #pragma omp parallel
     {
-        printf("Hello World. Thread = %d\n", omp_get_thread_num());
+        printf("World. Thread = %d\n", omp_get_thread_num());
     }
+    printf("DONE");
 }
