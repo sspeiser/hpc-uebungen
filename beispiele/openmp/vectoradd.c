@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 8192 * 8192
+#define N 8192 * 8192 * 8
 
 int main()
 {
@@ -42,4 +42,13 @@ int main()
     for(i=0;i<N;i++) { a[i] += b[i]; }
     wtime = omp_get_wtime() - wtime;
     printf("Parallel for: %.3f Sekunden\n", wtime);
+
+ // Parallel For-Loop
+    wtime = omp_get_wtime();
+    #pragma omp parallel
+    #pragma omp for simd 
+    for(i=0;i<N;i++) { a[i] += 4.0 * 
+    b[i]; }
+    wtime = omp_get_wtime() - wtime;
+    printf("Parallel for: %.3f Sekunden\n", wtime);   
 }
