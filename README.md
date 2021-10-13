@@ -43,7 +43,8 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
         <td>3/4</td><td>4</td>
         <td><b>Shared Memory mit OpenMP - I</b><br />
         <a href="https://sspeiser.github.io/hpc-doc/sharedmemory.html">Skript "Shared Memory mit OpenMP"</a> mit Übungen:
-        <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/password-crack-openmp">Parallele Programmierung mit OpenMP: Passwort cracken</a></li></ul></td>
+        <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/password-crack-openmp">Parallele Programmierung mit OpenMP: Passwort cracken</a></li>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/cpu-vs-mem">Memory vs. CPU als Bottleneck mit OpenMP</a></li></ul></td>
         <td>
             -
         </td>
