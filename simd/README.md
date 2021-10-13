@@ -28,6 +28,12 @@ Um wie viel konnten Sie das Programm beschleunigen?
 
 Eine ausführlichere Einführung zu Intrinsics finden Sie [hier](https://www.codeproject.com/Articles/874396/Crunching-Numbers-with-AVX-and-AVX).
 
+Übersetzen Sie das ursprüngliche serielle Programm mit hoher Optimierung und lassen sich einen Report über automatisch gefundene Vektorisierung geben:
+```
+$ gcc-11 matrixadd-simd.c -mavx -O3 -fopt-info-vec-all
+```
+Welche Leistung wird erreicht? Wie könnte die Performance noch weiter gesteigert werden? Was ist der limitierende Faktor?
+
 
 ## Graustufen-Konvertierung
 
