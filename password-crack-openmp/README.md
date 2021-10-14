@@ -1,7 +1,4 @@
-# Warmup: Parallele Programmierung mit OpenMP
-
-
-## Passwort-Crack
+# Parallele Programmierung mit OpenMP: Passwort-Crack
 
 Passwörter werden häufig nicht als Klartext, sondern [gehashten](https://en.wikipedia.org/wiki/Cryptographic_hash_function) Version gespeichert. Die Hashfunktion kann einfach berechnet werden aber nicht praktisch invertiert werden. Das heißt:
 - Aus dem Passwort kann sehr einfach der Hashwert berechnet werden
