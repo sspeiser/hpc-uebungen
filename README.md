@@ -41,7 +41,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
     </tr>$$
     <tr>
         <td>3/4</td><td>4</td>
-        <td><b>Shared Memory mit OpenMP - I</b><br />
+        <td><b>Shared Memory mit OpenMP</b><br />
         <a href="https://sspeiser.github.io/hpc-doc/sharedmemory.html">Skript "Shared Memory mit OpenMP"</a> mit Übungen:
         <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/password-crack-openmp">Parallele Programmierung mit OpenMP: Passwort cracken</a></li>
         <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/cpu-vs-mem">Memory vs. CPU als Bottleneck mit OpenMP</a></li></ul></td>
@@ -49,15 +49,32 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
             -
         </td>
     </tr>
-    <!-- <tr>
-        <td>4</td><td>5</td>
-        <td><b>Shared Memory mit OpenMP - II</b><br />
-        <a href="https://sspeiser.github.io/hpc-doc/sharedmemory.html">Skript "Shared Memory mit OpenMP: Rest"</a> mit Übungen:
-        <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/gameoflife-openmp">Game of Life mit OpenMP</a></li></ul></td>
+    <tr>
+        <td>5</td><td>5</td>
+        <td><b>Daten</b><br />
+        <a href="https://sspeiser.github.io/hpc-doc/data.html">Skript "Daten"</a> mit Übungen:
+        <ul>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/sparse-matrix">Sparse Matrix Repräsentation und Berechnungen</a></li>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/numerik-floats">Genauigkeit Floats</a></li></ul></td>
         <td>
             -
         </td>
-    </tr> -->
+    </tr>
+    <tr>
+        <td>5/6</td><td>6</td>
+        <td><b>Parallele Algorithmen</b><br />
+        <a href="https://sspeiser.github.io/hpc-doc/algorithmen.html">Skript "Parallele Algorithmen"</a> mit Übungen:
+        <ul><li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/openmp-tiling">Arbeitsaufteilung</a></li></ul></td>
+        <td>
+            -
+        </td>
+    </tr>
+    <!--
+        Vorstellung Projektideen, nicht im Skript?
+    -->
+    <!--
+        Quantencomputing
+    -->
     <tr>
         <td>5-12</td><td>TBD</td>
         <td>Distributed Memory, Data Parallel, GPU, ggfs. Spark/NumPy/TensorFlow, Parallele Algorithmen, Projekte/Anwendungen</td>
