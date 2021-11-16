@@ -14,7 +14,7 @@ Was sind die Unterschiede bei den 4 verschiedenen Ausführungen, wo liegt der be
 
 Implementieren Sie für die folgenden Funktionen jeweils eine sequenzielle und eine OpenMP-parallelisierte Version und testen sowohl mit als auch ohne `-O3`:
 - Länge von Vektoren, wenn a die x und b die y Koordinate enthält: c[i] = sqrt(a[i] * a[i] + b[i] * b[i]);
-- Einen Stencil, der c[i] aus einer gewichteten Summe der Elemente a[i] bis a[i + 7] berechnet (alle Elemente mit 1/8 gewichtet, d.h. der Durchschnitt wird gebildet)
+- Einen Stencil, der c[i] aus einer gewichteten Summe der Elemente a[i] bis a[i + 7] berechnet (die Gewichte können Sie selbst bestimmen - gibt es einen Untersschied bei `flop_pro_berechnung`, wenn Sie die gleichen oder unterschiedliche Gewichte wählen?)
 - Einer gemischten Berechnung, wo c[i] eine gewichtete Summe von a[i] und b[i] ist, a[i] eine gewichtete Summe von a[i] und b[i] und b[i] eine Skalierung (Multiplikation) von b[i]
 
 Achten Sie auf die passenden Parameter `flop_pro_berechnung, byte_pro_berechnung` beim Aufruf von `measure`.
