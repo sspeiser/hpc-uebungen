@@ -72,10 +72,9 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
     <tr>
         <td>7</td><td>7</td>
         <td><b>Distributed Memory mit MPI</b><br />
-        <a href="https://sspeiser.github.io/hpc-doc/distributedmemory.html">Skript "Parallele Algorithmen"</a> mit Übungen:
+        <a href="https://sspeiser.github.io/hpc-doc/distributedmemory.html">Skript "Parallele Algorithmen"</a> mit Übung:
         <ul>
-        <!-- <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/openmp-tiling">Arbeitsaufteilung</a></li> -->
-        <td>TBD</td>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/mpi-collective-comm">Collective Communication mit MPI</a></li>
         </ul></td>
         <td>
             -
