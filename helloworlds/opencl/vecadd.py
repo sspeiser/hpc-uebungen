@@ -4,28 +4,25 @@ from time import time
 
 
 repetitions = 4
-n = np.int64(1024*16)
-size = n * n
+n = 1024*1024*32
 
-a = np.ones(size).astype(np.float32)
-b = np.ones(size).astype(np.float32)
-c = np.ones(size).astype(np.float32)
+
+a = np.ones(n).astype(np.float32)
+b = np.ones(n).astype(np.float32)
+c = np.ones(n).astype(np.float32)
 
 results = {}
 
 # Sequential multiply
 
-def seq_mult(n, a, b, c):
+def seq_add(n, a, b, c):
     for i in range(n):
-        for j in range(n):
-            c[i*n+j] = 0.0
-            for k in range(n):
-                c[i*n+j] += a[i*n+k] * b[k*n+j]
-
+        c[i] = a[i] + b[i]
+            
 results['seq'] = []
 for i in range(repetitions):
     start = time()
-    # seq_mult(n, a, b, c)
+    # seq_add(n, a, b, c)
     duration = time() - start
     results['seq'].append(duration)
 
@@ -33,7 +30,7 @@ for i in range(repetitions):
 results['numpy'] = []
 for i in range(repetitions):
     start = time()
-    c = np.matmul(a, b)
+    c = a + b
     duration = time() - start 
     results['numpy'].append(duration)
 
@@ -50,34 +47,24 @@ buf_a = cl.Buffer(context, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, 
 buf_b = cl.Buffer(context, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=b)
 buf_c = cl.Buffer(context, cl.mem_flags.READ_WRITE, c.nbytes)
 
-matmul = """
-__kernel void matmul(
-    const int N,
-    __global float* A,
-    __global float* B,
-    __global float* C)
+vecadd = """
+__kernel void vecadd(
+    __global const float *A,
+    __global const float *B,
+    __global float *C)
 {
-    int k;
     int i = get_global_id(0);
-    int j = get_global_id(1);
-    float tmp;
-    if ((i < N) && (j < N))
-    {
-        tmp = 0.0f;
-        for (k = 0; k < N; k++)
-            tmp += A[i*N+k] * B[k*N+j];
-        C[i*N+j] = tmp;
-    }
+    C[i] = A[i] + B[i];
 }
 """
 
-program = cl.Program(context, matmul).build()
-program.matmul.set_scalar_arg_dtypes([np.int32, None, None, None])
+program = cl.Program(context, vecadd).build()
+program.vecadd.set_scalar_arg_dtypes([None, None, None])
 
 results['opencl'] = []
 for i in range(repetitions):
     start = time()
-    program.matmul(queue, (n, n), None, n, buf_a, buf_b, buf_c)
+    program.vecadd(queue, (n,), None, buf_a, buf_b, buf_c)
     queue.finish()
     duration = time() - start 
     results['opencl'].append(duration)
@@ -96,7 +83,7 @@ for algo, durations in results.items():
 
 for algo, durations in results.items():
     arr = np.array(durations)
-    print(f'{algo}:\t{arr.mean()}, {arr.min()}, {arr.max()}, {arr.stddev()}')
+    print(f'{algo}:\t{arr.mean()}, {arr.min()}, {arr.max()}, {np.median(arr)} {arr}')
 
 
 # OpenCL Image Load/Save: https://gist.github.com/pointhi/801a3c19498728801e909b623c1e15a1
