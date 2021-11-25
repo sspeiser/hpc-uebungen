@@ -2,8 +2,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-// #include <OpenCL/opencl.h>
+#ifdef __APPLE__
+#include <OpenCL/opencl.h>
+#else
 #include <CL/cl.h>
+#endif
+
 
 int main(int argc, char* const argv[]) {
     cl_uint num_devices, i;
