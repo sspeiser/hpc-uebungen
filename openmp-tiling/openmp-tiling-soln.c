@@ -8,10 +8,9 @@
 // Von Hand als Wurzel(P) berechnet
 #define BLOCKS_Y 4
 #define BLOCKS_X 4
-// 
+//
 #define BLOCKSIZEY (N / BLOCKS_Y)
 #define BLOCKSIZEX (N / BLOCKS_X)
-
 
 void mem_to_thread(int thread[N][N])
 {
@@ -28,7 +27,7 @@ void mem_to_thread(int thread[N][N])
         }
         int xstart = blockx * BLOCKSIZEX;
         int xend = xstart + BLOCKSIZEX;
-        if(xend > N) 
+        if (xend > N)
         {
             xend = N;
         }
@@ -42,34 +41,56 @@ void mem_to_thread(int thread[N][N])
     }
 }
 
-    void print_thread_nums(int thread[N][N])
+void mem_to_thread_alt(int thread[N][N])
+{
+#pragma omp parallel for collapse(2)
+    for (int blocky = 0; blocky < BLOCKS_Y; blocky++)
     {
-        int x, y;
-        printf("    |");
-        for (x = 0; x < N; x++)
-            printf("| %2i ", x);
-        printf("|\n");
-        printf("------");
-        for (x = 0; x < N; x++)
-            printf("-----");
-        printf("-\n");
-        for (y = 0; y < N; y++)
+        for (int blockx = 0; blockx < BLOCKS_X; blockx++)
         {
-            printf(" %2i |", y);
-            for (x = 0; x < N; x++)
-                printf("| %2i ", thread[y][x]);
-            printf("|\n");
+            int ystart = blocky * BLOCKSIZEY;
+            int yend = ystart + BLOCKSIZEY;
+            int xstart = blockx * BLOCKSIZEX;
+            int xend = xstart + BLOCKSIZEX;
+            for (int y = ystart; y < yend; y++)
+            {
+                for (int x = xstart; x < xend; x++)
+                {
+                    thread[y][x] = omp_get_thread_num();
+                }
+            }
         }
     }
+}
 
-    int main()
+void print_thread_nums(int thread[N][N])
+{
+    int x, y;
+    printf("    |");
+    for (x = 0; x < N; x++)
+        printf("| %2i ", x);
+    printf("|\n");
+    printf("------");
+    for (x = 0; x < N; x++)
+        printf("-----");
+    printf("-\n");
+    for (y = 0; y < N; y++)
     {
-        int x, y;
-        int thread[N][N];
-
-        omp_set_num_threads(N);
-
-        mem_to_thread(thread);
-
-        print_thread_nums(thread);
+        printf(" %2i |", y);
+        for (x = 0; x < N; x++)
+            printf("| %2i ", thread[y][x]);
+        printf("|\n");
     }
+}
+
+int main()
+{
+    int x, y;
+    int thread[N][N];
+
+    omp_set_num_threads(N);
+
+    mem_to_thread(thread);
+
+    print_thread_nums(thread);
+}
