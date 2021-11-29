@@ -8,7 +8,7 @@ Wie können Sie eine n x n-Matrix optimal auf p Prozessoren aufteilen unter folg
 Berechnen Sie die Anzahl der benötigten Operationen
 - als absolute Zahl für n = 8 und p = 4 und 
 - als allgemeine Formel von n und p
-- 
+
 für
 
 - Ihre optimale Aufteilung
