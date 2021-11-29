@@ -2,7 +2,7 @@
 
 Wie können Sie eine n x n-Matrix optimal auf p Prozessoren aufteilen unter folgenden Bedingungen:
 - Stencil-Operation, die die 4 direkt benachbarten Elemente der Matrix zur Berechnung des neuen Werts verwendet (links, rechts, oben, unten - nicht diagonal)
-- Kein "Wrap-Over", d.h. das erste Element ("links-oben") verwendet nur 3 Nachbarn
+- Kein "Wrap-Over", d.h. das erste Element ("links-oben") verwendet nur 2 Nachbarn
 - Nur Read-Operationen von Elementen, die zu einem anderen Prozessor gehören
 
 Berechnen Sie die Anzahl der benötigten Operationen
