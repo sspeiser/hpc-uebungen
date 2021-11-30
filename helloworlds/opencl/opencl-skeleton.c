@@ -12,7 +12,7 @@
 #include <CL/cl.h>
 #endif
 
-#define N (1024*1024)
+#define N (1024*1024*64)
 
 #define CL_PROGRAM_FILE "opencl-program.cl"
 
@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     }
 
     // Create a command queue
-    cl_command_queue commands = clCreateCommandQueue(context, device, 0, NULL);
+    cl_command_queue commands = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, NULL);
     if (!commands)
     {
         fprintf(stderr, "Failed to create a command queue.\n");
@@ -189,10 +189,15 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    // Time measurements
+    cl_event prof_event;
+    cl_ulong start_time, end_time;
+    size_t return_bytes;
+
     // Execute the kernel
     size_t global_size = N;
-    size_t local_size = 1;
-    err = clEnqueueNDRangeKernel(commands, vector_add, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
+    size_t local_size = 128;
+    err = clEnqueueNDRangeKernel(commands, vector_add, 1, NULL, &global_size, &local_size, 0, NULL, &prof_event);
     if (err)
     {
         fprintf(stderr, "Failed to execute kernel!\n");
@@ -201,6 +206,11 @@ int main(int argc, char** argv)
 
     // Wait for the commands to get serviced before reading back results
     clFinish(commands);
+
+    clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, &return_bytes);
+    clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, &return_bytes);
+    double time = (double) (end_time - start_time) / 1.0e9;
+    printf("Zeit: %.4f sec (nur Berechnung ohne Memory-Transfer)\nLeistung %.2f GFLOP/s\n", time, N / time / 1e9);
 
     // Read back the results from the device to verify the output
     err = clEnqueueReadBuffer( commands, d_c, CL_TRUE, 0, N * sizeof(float), c, 0, NULL, NULL );  

@@ -13,22 +13,26 @@
 #include <CL/cl.h>
 #endif
 
-#define N (1024*1024*32)
+#define N 1024
+#define MATRIX_SIZE (N * N)
+#define MATRIX_MEM  (N * N * sizeof(float))
 
-#define CL_PROGRAM_FILE "benchmark-soln.cl"
+#define CL_PROGRAM_FILE "matmul-unoptimized-soln.cl"
+#define KERNEL_NAME "matmul_unoptimized"
+//#define KERNEL_NAME "matmul_localvar"
 
 #define MAX_PLATFORMS 10
 #define MAX_DEVICES 10
 #define MAX_NAME_LENGTH 128
 
-
 struct benchmark_result {
-    double host_to_device;
-    double global_mem_access;
-    double only_flops;
+    double transfer_time;
+    double calc_time;
+    int errors;
 };
 
-int benchmark(cl_device_id device, char *program_text, struct benchmark_result *result) 
+
+int benchmark(cl_device_id device, char *program_text, char *kernel_name, struct benchmark_result *result) 
 {
     // Create a compute context 
     cl_context context;
@@ -69,42 +73,41 @@ int benchmark(cl_device_id device, char *program_text, struct benchmark_result *
     
 
     // Create Kernels
-    cl_kernel global_mem_access = clCreateKernel(program, "global_mem_access", &err);
-    if (!global_mem_access || err != CL_SUCCESS)
-    {
-        fprintf(stderr, "Failed to create compute kernel!\n");
-        return -1;
-    }
-
-    cl_kernel only_flops = clCreateKernel(program, "only_flops", &err);
-    if (!only_flops || err != CL_SUCCESS)
+    cl_kernel kernel = clCreateKernel(program, kernel_name, &err);
+    if (!kernel || err != CL_SUCCESS)
     {
         fprintf(stderr, "Failed to create compute kernel!\n");
         return -1;
     }
 
     // Daten auf dem Host vorbereiten
-    float *h_data = malloc(N * sizeof(float));
-    for(size_t i=0; i<N;i++) 
+    float *h_a = malloc(MATRIX_MEM);
+    float *h_b = malloc(MATRIX_MEM);
+    float *h_c = malloc(MATRIX_MEM);
+    for(size_t i=0; i<MATRIX_SIZE;i++) 
     {
-        h_data[i] = 0.0;
+        h_a[i] = 2.0;
+        h_b[i] = 4.0;
     }
 
     // Create array in device memory
-    cl_mem d_data = clCreateBuffer(context, CL_MEM_READ_WRITE, N * sizeof(float), NULL, NULL);
-    
-    if(!d_data)
+    cl_mem d_a = clCreateBuffer(context, CL_MEM_READ_ONLY, MATRIX_MEM, NULL, NULL);
+    cl_mem d_b = clCreateBuffer(context, CL_MEM_READ_ONLY, MATRIX_MEM, NULL, NULL);
+    cl_mem d_c = clCreateBuffer(context, CL_MEM_READ_WRITE, MATRIX_MEM, NULL, NULL);
+
+    if(!d_a | !d_b | !d_c)
     {
         fprintf(stderr, "Failed to allocate memory on device\n");
         return -1;
     }
 
     // Copy data to device
+    double transfer_sec = 0.0;
     cl_event prof_event;
     cl_ulong start_time, end_time;
     size_t return_bytes;
    
-    err = clEnqueueWriteBuffer(commands, d_data, CL_TRUE, 0, N * sizeof(float), h_data, 0, NULL, &prof_event);
+    err = clEnqueueWriteBuffer(commands, d_a, CL_TRUE, 0, MATRIX_MEM, h_a, 0, NULL, &prof_event);
     if (err != CL_SUCCESS)
     {
         fprintf(stderr, "Failed to write to device array\n");
@@ -115,31 +118,37 @@ int benchmark(cl_device_id device, char *program_text, struct benchmark_result *
     
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, &return_bytes);
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, &return_bytes);
-    result->host_to_device = (double) (end_time - start_time) / 1.0e9;
+    transfer_sec += (double) (end_time - start_time) / 1.0e9;
+    
+    err = clEnqueueWriteBuffer(commands, d_b, CL_TRUE, 0, MATRIX_MEM, h_b, 0, NULL, &prof_event);
+    if (err != CL_SUCCESS)
+    {
+        fprintf(stderr, "Failed to write to device array\n");
+        return -1;
+    }
+    // Wait for transfer to finish
+    clFinish(commands);
+    
+    clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, &return_bytes);
+    clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, &return_bytes);
+    transfer_sec += (double) (end_time - start_time) / 1.0e9;
     
     
     // Set the arguments to our compute kernel
-    err = 0;
-    err  = clSetKernelArg(global_mem_access, 0, sizeof(cl_mem), &d_data);
+    int n = N;
+    err  = clSetKernelArg(kernel, 0, sizeof(int), &n);
+    err |= clSetKernelArg(kernel, 1, sizeof(cl_mem), &d_a);
+    err |= clSetKernelArg(kernel, 2, sizeof(cl_mem), &d_b);
+    err |= clSetKernelArg(kernel, 3, sizeof(cl_mem), &d_c);
     if (err != CL_SUCCESS)
     {
         fprintf(stderr, "Failed to set kernel arguments!\n");
         return -1;
     }
 
-    size_t local_size = 32;
-    // Get the maximum work group size for executing the kernel on the device
-    err = clGetKernelWorkGroupInfo(global_mem_access, device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local_size), &local_size, NULL);
-    if (err != CL_SUCCESS)
-    {
-        fprintf(stderr, "Error: Failed to retrieve kernel work group info\n");
-        return -1;
-    }
-
-
     // Execute the kernel
-    size_t global_size = N;
-    err = clEnqueueNDRangeKernel(commands, global_mem_access, 1, NULL, &global_size, &local_size, 0, NULL, &prof_event);
+    size_t global_size[] = {N, N};
+    err = clEnqueueNDRangeKernel(commands, kernel, 2, NULL, global_size, NULL, 0, NULL, &prof_event);
     if (err)
     {
         fprintf(stderr, "Failed to execute kernel!\n");
@@ -151,53 +160,44 @@ int benchmark(cl_device_id device, char *program_text, struct benchmark_result *
     
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, &return_bytes);
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, &return_bytes);
-    result->global_mem_access = (double) (end_time - start_time) / 1.0e9;
-    
-    
-
-
-    // Set the arguments to our compute kernel
-    err = 0;
-    err  = clSetKernelArg(only_flops, 0, sizeof(cl_mem), &d_data);
+    double calc_time = (double) (end_time - start_time) / 1.0e9;
+      
+    // Copy Result Data Back
+    err = clEnqueueReadBuffer(commands, d_c, CL_TRUE, 0, MATRIX_MEM, h_c, 0, NULL, &prof_event);
     if (err != CL_SUCCESS)
     {
-        fprintf(stderr, "Failed to set kernel arguments!\n");
+        fprintf(stderr, "Failed to read from device array\n");
         return -1;
     }
-
-    // Get the maximum work group size for executing the kernel on the device
-    err = clGetKernelWorkGroupInfo(only_flops, device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local_size), &local_size, NULL);
-    if (err != CL_SUCCESS)
-    {
-        fprintf(stderr, "Error: Failed to retrieve kernel work group info\n");
-        return -1;
-    }
-
-    
-    // Execute the kernel
-    global_size = N;
-    err = clEnqueueNDRangeKernel(commands, only_flops, 1, NULL, &global_size, &local_size, 0, NULL, &prof_event);
-    if (err)
-    {
-        fprintf(stderr, "Failed to execute kernel!\n");
-        return -1;
-    }
-
-    // Wait for the commands to get serviced before reading back results
+    // Wait for transfer to finish
     clFinish(commands);
     
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &start_time, &return_bytes);
     clGetEventProfilingInfo(prof_event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &end_time, &return_bytes);
-    result->only_flops = (double) (end_time - start_time) / 1.0e9;
-    
-    
-    
-    clReleaseMemObject(d_data);
+    transfer_sec += (double) (end_time - start_time) / 1.0e9;
+
+    // Check Results
+    int errors = 0;
+    for(int i=0; i<MATRIX_SIZE;i++) {
+        if(fabs(h_c[i] - N * 2.0 * 4.0) > 0.0001) {
+            errors += 1;
+        }
+    }
+
+    result->transfer_time = transfer_sec;
+    result->calc_time = calc_time;
+    result->errors = errors;
+
+    clReleaseMemObject(d_a);
+    clReleaseMemObject(d_b);
+    clReleaseMemObject(d_c);
     clReleaseProgram(program);
-    clReleaseKernel(global_mem_access);
-    clReleaseKernel(only_flops);
+    clReleaseKernel(kernel);
     clReleaseCommandQueue(commands);
     clReleaseContext(context);
+    free(h_a);
+    free(h_b);
+    free(h_c);
     return 0;
 }
 
@@ -237,21 +237,20 @@ int main(int argc, char** argv)
     fclose(program_file);
     
 
-    printf("Device                                        | Host to Device GB/s | Global Mem GB/s |       GFLOPS\n");
-    printf("----------------------------------------------------------------------------------------------------\n");
+    printf("Device                                        | GFLOP/s w/o transfer | GFLOP/s w/ transfer |      Errors\n");
+    printf("--------------------------------------------------------------------------------------------------------\n");
     for(int i=0; i<n_devices;i++) {
         clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(name), name, NULL);
         printf("[%d]: %40s | ", i, name);
 
         struct benchmark_result result;
 
-        benchmark(devices[i], program_text, &result);
+        benchmark(devices[i], program_text, KERNEL_NAME, &result);
 
-        double hostodev = N * sizeof(float) / 1e9 / result.host_to_device;
-        double globalmem = 2.0 * N * sizeof(float) / 1e9 / result.global_mem_access;
-        double onlyflops = 64.0 * 4 * N / 1e9 / result.only_flops;
-
-        printf("         %10.2f |      %10.2f |   %10.2f\n", hostodev, globalmem, onlyflops);
+        double gflops_calc = 2.0 * N * N * N / 1e9 / result.calc_time;
+        double gflops_transfer = 2.0 * N * N * N / 1e9 / (result.transfer_time + result.calc_time);
+        
+        printf("          %10.2f |          %10.2f |   %9d\n", gflops_calc, gflops_transfer, result.errors);
     }
       
     

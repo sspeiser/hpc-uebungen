@@ -83,10 +83,12 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
     <tr>
         <td>8/9</td><td>8</td>
         <td><b>GPU</b><br />
-        <!-- <a href="https://sspeiser.github.io/hpc-doc/distributedmemory.html">Skript "Parallele Algorithmen"</a> mit Übungen: -->
+        <a href="https://sspeiser.github.io/hpc-doc/gpu.html">Skript "Massiv parallele Prozessoren: GPUs"</a> mit Übungen und Beispielen:
         <ul>
-        <!-- <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/openmp-tiling">Arbeitsaufteilung</a></li> -->
-        <td>TBD</td>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/helloworlds/opencl">Skelett für OpenCL Anwendungen</a></li>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/opencl-benchmark">(Sehr) simplistischer Benchmark</a></li>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/opencl-local-example">Beispiel für Nutzung der Speicherhierarchien</a></li>
+        <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/opencl-matmul">Matrix-Matrix-Multiplikation mit OpenCL</a></li>
         </ul></td>
         <td>
             -
@@ -98,7 +100,6 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
         <!-- <a href="https://sspeiser.github.io/hpc-doc/distributedmemory.html">Skript "Parallele Algorithmen"</a> mit Übungen: -->
         <ul>
         <!-- <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/openmp-tiling">Arbeitsaufteilung</a></li> -->
-        <td>TBD</td>
         </ul></td>
         <td>
             -
