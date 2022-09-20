@@ -5,14 +5,14 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#define N 10 * 1000 * 1000
+#define N 10 * 1000
+// * 1000
 
 __global__ void vector_add(float *res, float *a, float *b, int n)
 {
-    for (int i = 0; i < n; i++)
-    {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if(i < n)
         res[i] = a[i] + b[i];
-    }
 }
 
 int main()
@@ -32,16 +32,50 @@ int main()
         b[i] = 2.0f;
     }
 
-    cudaMalloc((void**)&d_a, sizeof(float) * N);
-    cudaMalloc((void**)&d_b, sizeof(float) * N);
-    cudaMalloc((void**)&d_res, sizeof(float) * N);
+    cudaError_t err;
+    err = cudaMalloc((void**)&d_a, sizeof(float) * N);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
 
-    cudaMemcpy(d_a, a, sizeof(float) * N, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, b, sizeof(float) * N, cudaMemcpyHostToDevice);
+    err = cudaMalloc((void**)&d_b, sizeof(float) * N);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
 
-    vector_add<<<1,1>>>(d_res, d_a, d_b, N);
+    err = cudaMalloc((void**)&d_res, sizeof(float) * N);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
+
+    err = cudaMemcpy(d_a, a, sizeof(float) * N, cudaMemcpyHostToDevice);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
+
+    err = cudaMemcpy(d_b, b, sizeof(float) * N, cudaMemcpyHostToDevice);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
+
+    vector_add<<<ceil(N/256.0),256>>>(d_res, d_a, d_b, N);
     
-    cudaMemcpy(res, d_res, sizeof(float) * N, cudaMemcpyDeviceToHost);
+    err = cudaMemcpy(res, d_res, sizeof(float) * N, cudaMemcpyDeviceToHost);
+    if(err != cudaSuccess) 
+    {
+        printf("Error %s:%d: %s\n",__FILE__, __LINE__, cudaGetErrorString(err));
+        exit(-1);
+    }
 
     for(int i = 0; i < N; i++){
         if(fabs(res[i] - a[i] - b[i]) > 0.00001) {
