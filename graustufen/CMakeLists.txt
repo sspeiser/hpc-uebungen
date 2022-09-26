@@ -9,3 +9,8 @@ add_executable(graustufen
         graustufen-loop.c
         stb_image.h
         stb_image_write.h)
+
+add_executable(graustufen-soln
+        graustufen-loop-soln.c
+        stb_image.h
+        stb_image_write.h)
