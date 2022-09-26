@@ -14,8 +14,9 @@
 
 void mem_to_thread(int thread[N][N])
 {
+    int block;
 #pragma omp parallel for
-    for (int block = 0; block < P; block++)
+    for (block = 0; block < P; block++)
     {
         int blocky = block / BLOCKS_X;
         int blockx = block % BLOCKS_X;
@@ -43,10 +44,13 @@ void mem_to_thread(int thread[N][N])
 
 void mem_to_thread_alt(int thread[N][N])
 {
-#pragma omp parallel for collapse(2)
-    for (int blocky = 0; blocky < BLOCKS_Y; blocky++)
+    int blocky;
+    int blockx;
+
+#pragma omp parallel for private(blockx) collapse(2)
+    for (blocky = 0; blocky < BLOCKS_Y; blocky++)
     {
-        for (int blockx = 0; blockx < BLOCKS_X; blockx++)
+        for (blockx = 0; blockx < BLOCKS_X; blockx++)
         {
             int ystart = blocky * BLOCKSIZEY;
             int yend = ystart + BLOCKSIZEY;
@@ -85,7 +89,6 @@ void print_thread_nums(int thread[N][N])
 
 int main()
 {
-    int x, y;
     int thread[N][N];
 
     omp_set_num_threads(N);

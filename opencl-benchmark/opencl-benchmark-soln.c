@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <unistd.h>
-#include <sys/time.h>
+//#include <unistd.h>
+//#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef __APPLE__
@@ -204,59 +204,105 @@ int benchmark(cl_device_id device, char *program_text, struct benchmark_result *
 
 int main(int argc, char** argv)
 {
-    // Get all devices
-    cl_device_id *devices;
-    cl_uint n_devices;
-    clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, MAX_DEVICES, NULL, &n_devices);
-    devices = (cl_device_id *) malloc(n_devices * sizeof(cl_device_id));
-    clGetDeviceIDs(NULL, CL_DEVICE_TYPE_ALL, n_devices, devices, NULL);
-    if(n_devices == 0) {
-        fprintf(stderr, "No devices found. Exiting.\n");
+    int err;
+    // Get all platforms
+    cl_platform_id * platforms;
+    cl_uint n_platforms;
+
+    err = clGetPlatformIDs(16, NULL, &n_platforms);
+    if (err != CL_SUCCESS) {
+        fprintf(stderr, "Error getting number of platforms\n");
         return -1;
     }
-
-    char name[MAX_NAME_LENGTH];
-    printf("Devices:\n");
-    for(int i=0;i<n_devices;i++) {
-        clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(name), name, NULL);
-        printf("[%d]: %s\n", i, name);
-    }
-
-    // Load program from file
-    FILE *program_file = fopen(CL_PROGRAM_FILE, "r");
-    if(program_file == NULL) {
-        fprintf(stderr, "Failed to open OpenCL program file\n");
+    if (n_platforms == 0) {
+        fprintf(stderr, "No platforms found\n");
         return -1;
     }
-    fseek(program_file, 0, SEEK_END);
-    size_t program_size = ftell(program_file);
-    rewind(program_file);
-    char *program_text = (char *) malloc((program_size + 1) * sizeof(char));
-    program_text[program_size] = '\0';
-    fread(program_text, sizeof(char), program_size, program_file);
-    fclose(program_file);
-    
-
-    printf("Device                                        | Host to Device GB/s | Global Mem GB/s |       GFLOPS\n");
-    printf("----------------------------------------------------------------------------------------------------\n");
-    for(int i=0; i<n_devices;i++) {
-        clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(name), name, NULL);
-        printf("[%d]: %40s | ", i, name);
-
-        struct benchmark_result result;
-
-        benchmark(devices[i], program_text, &result);
-
-        double hostodev = N * sizeof(float) / 1e9 / result.host_to_device;
-        double globalmem = 2.0 * N * sizeof(float) / 1e9 / result.global_mem_access;
-        double onlyflops = 64.0 * 4 * N / 1e9 / result.only_flops;
-
-        printf("         %10.2f |      %10.2f |   %10.2f\n", hostodev, globalmem, onlyflops);
+    platforms = (cl_platform_id*)malloc(n_platforms * sizeof(cl_platform_id));
+    err = clGetPlatformIDs(n_platforms, platforms, NULL);
+    if (err != CL_SUCCESS) {
+        fprintf(stderr, "Error getting platforms\n");
+        return -1;
     }
-      
-    
-    free(program_text);
-    free(devices);
+    char platform_name[MAX_NAME_LENGTH];
+    printf("Platforms:\n");
+    for (int i = 0; i < n_platforms; i++) {
+        clGetPlatformInfo(platforms[i], CL_PLATFORM_NAME, sizeof(platform_name), platform_name, NULL);
+        printf("[%d]: %s\n", i, platform_name);
+    }
+
+    for (int j = 0; j < n_platforms; j++) {
+
+        // Get all devices
+        cl_device_id* devices;
+        cl_uint n_devices;
+        err = clGetDeviceIDs(platforms[j], CL_DEVICE_TYPE_ALL, MAX_DEVICES, NULL, &n_devices);
+        if (err != CL_SUCCESS) {
+            if (err == CL_DEVICE_NOT_FOUND) {
+                fprintf(stderr, "No devices found.\n");
+                return -1;
+            }
+            else {
+                fprintf(stderr, "CL_INVALID_PLATFORM = %d\n", CL_INVALID_PLATFORM);
+                fprintf(stderr, "CL_INVALID_DEVICE_TYPE = %d\n", CL_INVALID_DEVICE_TYPE);
+                fprintf(stderr, "CL_INVALID_VALUE = %d\n", CL_INVALID_VALUE);
+                fprintf(stderr, "CL_DEVICE_NOT_FOUND = %d\n", CL_DEVICE_NOT_FOUND);
+                fprintf(stderr, "CL_OUT_OF_RESOURCES = %d\n", CL_OUT_OF_RESOURCES);
+                fprintf(stderr, "CL_OUT_OF_HOST_MEMORY = %d\n", CL_OUT_OF_HOST_MEMORY);
+            }
+            fprintf(stderr, "Error getting number of devices %d\n.", err);
+            return -1;
+        }
+        devices = (cl_device_id*)malloc(n_devices * sizeof(cl_device_id));
+        clGetDeviceIDs(platforms[j], CL_DEVICE_TYPE_ALL, n_devices, devices, NULL);
+        if (n_devices == 0) {
+            fprintf(stderr, "No devices found. Exiting.\n");
+            return -1;
+        }
+
+        char name[MAX_NAME_LENGTH];
+        printf("Devices:\n");
+        for (int i = 0; i < n_devices; i++) {
+            clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(name), name, NULL);
+            printf("[%d]: %s\n", i, name);
+        }
+
+        // Load program from file
+        FILE* program_file = fopen(CL_PROGRAM_FILE, "r");
+        if (program_file == NULL) {
+            fprintf(stderr, "Failed to open OpenCL program file\n");
+            return -1;
+        }
+        fseek(program_file, 0, SEEK_END);
+        size_t program_size = ftell(program_file);
+        rewind(program_file);
+        char* program_text = (char*)malloc((program_size + 1) * sizeof(char));
+        program_text[program_size] = '\0';
+        fread(program_text, sizeof(char), program_size, program_file);
+        fclose(program_file);
+
+
+        printf("Device                                        | Host to Device GB/s | Global Mem GB/s |       GFLOPS\n");
+        printf("----------------------------------------------------------------------------------------------------\n");
+        for (int i = 0; i < n_devices; i++) {
+            clGetDeviceInfo(devices[i], CL_DEVICE_NAME, sizeof(name), name, NULL);
+            printf("[%d]: %40s | ", i, name);
+
+            struct benchmark_result result;
+
+            benchmark(devices[i], program_text, &result);
+
+            double hostodev = N * sizeof(float) / 1e9 / result.host_to_device;
+            double globalmem = 2.0 * N * sizeof(float) / 1e9 / result.global_mem_access;
+            double onlyflops = 64.0 * 4 * N / 1e9 / result.only_flops;
+
+            printf("         %10.2f |      %10.2f |   %10.2f\n", hostodev, globalmem, onlyflops);
+        }
+
+
+        free(program_text);
+        free(devices);
+    }
     return 0;
 }
 

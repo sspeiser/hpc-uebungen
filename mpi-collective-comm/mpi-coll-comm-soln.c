@@ -6,9 +6,9 @@
 #define N_MIN 1
 #define N_MAX 5
 
-int main()
+int main(int argc, char* argv[])
 {
-    MPI_Init(NULL, NULL);
+    MPI_Init(&argc, &argv);
     int size;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     int rank;

@@ -4,4 +4,4 @@
 
 # Windows
 all:
-	gcc -I$(MSMPI_INC) -L$(MSMPI_LIB64) -lmsmpi hellopmpi.c
+	gcc -I$(MSMPI_INC) -L$(MSMPI_LIB64) -lmsmpi hellompi.c
