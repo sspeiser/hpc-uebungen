@@ -18,7 +18,7 @@ In diesem Repository befinden sich die Übungen für die Vorlesung High-Performa
             <li>Einrichtung Programmierumgebung (C, Jupyter, Python, Git)</li>
             <li><a href="https://github.com/sspeiser/hpc-uebungen/tree/main/graustufen">Übung/Warmup: Konvertierung eines Bilds in Graustufen</a></li>
             </ul></td>
-    <td><ul><li>2er Teams bilden. Bevorzugt mit/ohne C/Python-Erfahrung</li>
+    <td><ul><li>2er Teams bilden. Bevorzugt mit/ohne C/Python-Erfahrung - eigene Anwendungsidee entwickeln High-Level warum HPC nötig?</li>
             <li>C lernen/auffrischen, z.B. <a href="https://www.youtube.com/watch?v=3lQEunpmtRA">C Programming (25 Minuten)</a>, <a href="https://youtu.be/mw1qsMieK5c">C Pointer (10 Minuten)</a> und <a href="https://youtu.be/wadj1UH2gVQ">Dynamic Memory in C (10 Minuten)</a></li></ul></td>
     </tr>
     <tr>
