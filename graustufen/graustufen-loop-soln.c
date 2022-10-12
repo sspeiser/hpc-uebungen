@@ -1,11 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+
+
+#include <sys/timeb.h>
+
+uint64_t system_current_time_millis()
+{
+#if defined(_WIN32) || defined(_WIN64)
+    struct _timeb timebuffer;
+    _ftime(&timebuffer);
+    return (uint64_t)(((timebuffer.time * 1000) + timebuffer.millitm));
+#else
+    struct timeb timebuffer;
+    ftime(&timebuffer);
+    return (uint64_t)(((timebuffer.time * 1000) + timebuffer.millitm));
+#endif
+}
+
 
 int main()
 {
@@ -22,12 +38,11 @@ int main()
     printf("w: %d ; h: %d ; c: %d\n", width, height, channels);
     
     // Allocate target array for grayscale image
-    unsigned char *gray = malloc(width * height);
+    unsigned char *gray = (unsigned char *) malloc(width * height);
 
-    // TODO Zeitmessen Start
-    struct timeval start;
-    gettimeofday(&start, 0);
-
+    // Zeitmessen Start
+    uint64_t start = system_current_time_millis();
+        
     // TODO Konvertierung
     for(int x=0;x<width;x++) {
         for(int y=0;y<height;y++) {
@@ -37,12 +52,9 @@ int main()
         }
     }
 
-    // TODO Zeitmessen Ende
-    struct timeval end;
-    gettimeofday(&end, 0);
-    long lsec = end.tv_sec - start.tv_sec;
-    long lusec = end.tv_usec - start.tv_usec;
-    double sec = (lsec + lusec / 1000000.0);
+    // Zeitmessen Ende
+    uint64_t end = system_current_time_millis();
+    double sec = (end - start) / 1.0e3;
     printf("%8.6f seconds\n", sec);
 
     // TODO FLOP Berechnung

@@ -15,7 +15,7 @@ GRAU = 0.2126 * ROT + 0.7152 * GRUEN + 0.0722 * BLAU
 In der Datei `graustufen-loop.c` finden Sie ein Grundgerüst für ein C-Programm, das
 1. ein farbiges JPG einliest in ein Byte-Array
 2. einen Speicherbereich für das Byte-Array eines Graustufen-Bilds gleicher Größe allokiert
-3. das Byte-Array in ein JPG schreibt
+3. das neue Byte-Array in ein JPG schreibt
 
 Was fehlt ist Ihr Code zwischen Schritt 2 und 3, der die Konvertierung vornimmt.
 
@@ -27,11 +27,11 @@ Beachten Sie:
 Gehen Sie wie folgt vor:
 1. Nutzen Sie einfache Schleifen, um durch alle Pixel zu gehen und jeweils aus den Farbwerten den Graustufenwert zu berechnen: Im Code an Stelle `// TODO Konvertierung`
 2. Berechnen Sie die Anzahl der benötigten Fließkommaoperationen (FLOP) für die Konvertierung - also die Anzahl der Multiplikationen und Additionen und geben diese aus: Im Code an Stelle `// TODO FLOP Berechnung`
-3. Messen Sie die Zeit für Ihre Konvertierung - ohne das Laden und Schreiber der Dateien. Nutzen Sie hierfür die Funktion `gettimeofday`: Im Code an Stelle `// TODO Zeitmessen Start` und `// TODO Zeitmessen Ende`
-4. Berechnen Sie die FLOP/s, die Ihr Algorithmus erreicht hat und geben Sie das Ergebnis aus an Stelle `//TODO Ausgabe FLOP/s`
-5. Vergleichen Sie die erreichte Zahl mit der theoretischen Single-Core Leistung Ihrer CPU. Warum liegt der Wert darunter?
+3. Berechnen Sie die FLOP/s, die Ihr Algorithmus erreicht hat und geben Sie das Ergebnis aus an Stelle `//TODO Ausgabe FLOP/s`. Die 
+4. Vergleichen Sie die erreichte Zahl mit der theoretischen Single-Core Leistung Ihrer CPU. Warum liegt der Wert darunter?
 
-Kompilieren Sie das Programm mit gcc (bei Windows ersetzen Sie .out durch .exe und lassen bei der Ausführung `./` weg):
+Je nach verwendeter IDE wird die ausführbare Datei in einem Unterverzeichnis erstellt und ausgeführt - dann müssen Sie den Dateipfad zum Bild entsprechend anpassen mit `../` oder gar `../..` vor dem Dateinamen.
+Alternativ können Sie das Programm auch händisch kompilieren, z.B. mit `gcc` (bei Windows ersetzen Sie .out durch .exe und lassen bei der Ausführung `./` weg):
 ```
 $ gcc -o graustufen-loop.out graustufen-loop.c -lm
 ...
