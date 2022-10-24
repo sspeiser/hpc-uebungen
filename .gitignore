@@ -1,3 +1,6 @@
+.vs
+.idea
+cmake-build*
 build/
 # Prerequisites
 *.d

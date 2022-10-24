@@ -8,6 +8,7 @@
 
 
 #include <sys/timeb.h>
+#include <stdint.h>
 
 uint64_t system_current_time_millis()
 {
@@ -28,7 +29,7 @@ int main()
     // Read color JPG into byte array "img"
     // Array contains "width" x "height" pixels each consisting of "channels" colors/bytes
     int width, height, channels;
-    unsigned char *img = stbi_load("tamanna-rumee-vaTsR-ghLog-unsplash.jpg", &width, &height, &channels, 0);
+    unsigned char *img = stbi_load("../../../tamanna-rumee-vaTsR-ghLog-unsplash.jpg", &width, &height, &channels, 0);
     if (img == NULL)
     {
         printf("Err: loading image\n");
@@ -44,8 +45,8 @@ int main()
     uint64_t start = system_current_time_millis();
         
     // TODO Konvertierung
-    for(int x=0;x<width;x++) {
-        for(int y=0;y<height;y++) {
+    for (int y = 0; y < height; y++) {
+        for(int x=0;x<width;x++) {
             gray[y * width + x] =  0.2126 * img[(y * width + x) * 3]
                                  + 0.7152 * img[(y * width + x) * 3 + 1] 
                                  + 0.0722 * img[(y * width + x) * 3 + 2];
