@@ -49,11 +49,11 @@ int main()
     float *b1d = b[0];
     
     // Ohne SIMD: 1 Float Point pro Schritt
-    for(int i=0;i<size;i+=1) {
-        *a1d = *a1d + *b1d;
-        a1d += 1;
-        b1d += 1;
-    }
+    // for(int i=0;i<size;i+=1) {
+    //     *a1d = *a1d + *b1d;
+    //     a1d += 1;
+    //     b1d += 1;
+    // }
 
     // SSE: 4 x 32 Bit Floating Points pro Schritt
     // for(int i=0;i<size;i+=4) {
@@ -66,14 +66,14 @@ int main()
     // }
 
     // AVX: 8 x 32 Bit Floating Points pro Schritt
-    // for(int i=0;i<size;i+=8) {
-    //     __m256 avec = _mm256_load_ps(a1d);
-    //     __m256 bvec = _mm256_load_ps(b1d);
-    //     avec = _mm256_add_ps (avec, bvec);
-    //     _mm256_store_ps(a1d, avec);
-    //     a1d += 8;
-    //     b1d += 8;
-    // }
+    for(int i=0;i<size;i+=8) {
+        __m256 avec = _mm256_load_ps(a1d);
+        __m256 bvec = _mm256_load_ps(b1d);
+        avec = _mm256_add_ps (avec, bvec);
+        _mm256_store_ps(a1d, avec);
+        a1d += 8;
+        b1d += 8;
+    }
 
     gettimeofday(&end, 0);
 
