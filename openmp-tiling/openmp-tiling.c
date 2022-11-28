@@ -6,8 +6,9 @@
 
 void mem_to_thread(int thread[N][N])
 {
+    int y;
 #pragma omp parallel for
-    for (int y = 0; y < N; y++)
+    for (y = 0; y < N; y++)
     {
         for (int x = 0; x < N; x++)
         {
