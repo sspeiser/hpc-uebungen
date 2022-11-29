@@ -25,6 +25,12 @@ Optimal ist eine Aufteilung, die Blocks bildet mit möglichst wenigen Randelemen
 
 Als Größenordnung:
 - n = 1024, p = 16:
-  - Quadrate: 6.144
+  - Quadrate: 12.288
   - Zeilen: 30.720
-  - Verhältnis: 5x
+  - Verhältnis: 2,5x
+- n = 16.384, p = 256
+  - Quadrate: 983.040
+  - Zeilen: 8.355.840
+  - Verhältnis: 8,5x
+- Generell für p, Verhältnis: $\frac{p - 1}{(2(\sqrt{p} - 1)} \approx \frac{\sqrt{p}}{2}$
+  -  p = 4.096 (GPU), Verhältnis: 32x
