@@ -181,7 +181,7 @@ Es kann auch ausreichend sein eine einzelne Anwendung in einer einzelnen Technol
 - (Radix-)Sort verteilt
 
 
-## Abgabe bis 13.01.2021
+## Abgabe bis 11.01.2023 EOD (23:59 Uhr)
 
 - Projektbericht (Seitenangaben als Richtwerte): 
     - Motivation (0,5 Seiten)
