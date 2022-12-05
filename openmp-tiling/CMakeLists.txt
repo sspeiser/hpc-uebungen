@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(OpenMPtiling)
 
-add_executable(openmp-tiling openmp-tiling-soln.c)
+add_executable(openmp-tiling openmp-tiling.c)
 add_executable(openmp-tiling-soln openmp-tiling-soln.c)
 
 find_package(OpenMP REQUIRED)
