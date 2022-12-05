@@ -178,6 +178,7 @@ Es kann auch ausreichend sein eine einzelne Anwendung in einer einzelnen Technol
 - Traffic Simulation
 - Circuit Simulation
 - Fraktale/Mandelbrot
+- (Radix-)Sort verteilt
 
 
 ## Abgabe bis 13.01.2021
