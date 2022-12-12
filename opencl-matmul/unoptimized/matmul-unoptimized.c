@@ -255,7 +255,7 @@ int main(int argc, char **argv)
         }
 
         // Load program from file
-        FILE *program_file = fopen(CL_PROGRAM_FILE, "r");
+        FILE *program_file = fopen(CL_PROGRAM_FILE, "rb");
         if (program_file == NULL)
         {
             fprintf(stderr, "Failed to open OpenCL program file\n");
