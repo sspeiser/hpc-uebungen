@@ -40,6 +40,9 @@ int main(int argc, char* argv[])
     // Nun bestimmen wir die Offsets im Gesamtarray, wo für jeden Rank
     // die relevanten Daten beginnen
     int offset;
+    if(rank == 0) {
+        offset = 0;
+    }
     MPI_Exscan(&n, &offset, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
     printf("[%02d] offset = %d\n", rank, offset);
 

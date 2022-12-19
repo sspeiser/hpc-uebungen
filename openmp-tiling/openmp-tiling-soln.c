@@ -93,7 +93,7 @@ int main()
 
     omp_set_num_threads(N);
 
-    mem_to_thread(thread);
+    mem_to_thread_alt(thread);
 
     print_thread_nums(thread);
 }

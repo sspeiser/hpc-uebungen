@@ -16,8 +16,8 @@
 #define MATRIX_MEM (N * N * sizeof(float))
 
 #define CL_PROGRAM_FILE "matmul-unoptimized-soln.cl"
-#define KERNEL_NAME "matmul_unoptimized"
-//#define KERNEL_NAME "matmul_localvar"
+// #define KERNEL_NAME "matmul_unoptimized"
+#define KERNEL_NAME "matmul_localvar"
 
 
 #define MAX_PLATFORMS 10

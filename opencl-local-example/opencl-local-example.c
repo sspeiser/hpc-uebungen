@@ -14,13 +14,14 @@
 #endif
 
 #define N (1024l * 1024l * 128l)
-#define BLOCK_SIZE 1
+#define BLOCK_SIZE 128
 #define N_BLOCKS (N / BLOCK_SIZE)
 #define MATRIX_MEM (N * sizeof(float))
 
 #define CL_PROGRAM_FILE "opencl-local-example.cl"
-#define KERNEL_NAME "averages"
-// #define KERNEL_NAME "averages_local"
+// #define KERNEL_NAME "averages"
+// Also: set Arg 3 below
+#define KERNEL_NAME "averages_local"
 
 #define MAX_PLATFORMS 10
 #define MAX_DEVICES 10
@@ -136,7 +137,7 @@ int benchmark(cl_device_id device, char *program_text, char *kernel_name, struct
     err = clSetKernelArg(kernel, 0, sizeof(size_t), &n);
     err |= clSetKernelArg(kernel, 1, sizeof(cl_mem), &d_src);
     err |= clSetKernelArg(kernel, 2, sizeof(cl_mem), &d_dst);
-    // err |= clSetKernelArg(kernel, 3, sizeof(float) * BLOCK_SIZE, NULL);
+    err |= clSetKernelArg(kernel, 3, sizeof(float) * BLOCK_SIZE, NULL);
     if (err != CL_SUCCESS)
     {
         fprintf(stderr, "Failed to set kernel arguments!\n");

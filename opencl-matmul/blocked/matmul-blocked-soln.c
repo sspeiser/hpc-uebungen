@@ -13,7 +13,7 @@
 #include <CL/cl.h>
 #endif
 
-#define N 1024
+#define N (1024 * 1)
 #define BLOCK_SIZE 16
 #define N_BLOCKS (N / BLOCK_SIZE)
 #define MATRIX_SIZE (N * N)

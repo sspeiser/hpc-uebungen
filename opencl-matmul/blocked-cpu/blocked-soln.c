@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#define N 1024
+#define N 1024*2
 #define MATRIX_SIZE (N * N)
 #define MATRIX_MEM (N * N * sizeof(float))
 #define BLOCK_SIZE 16
