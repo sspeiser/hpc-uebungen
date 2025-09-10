@@ -1,0 +1,12 @@
+[project]
+name = "amdahl"
+version = "0.1.0"
+description = "Calculate some speedup examples according to Amdahl's law"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=6.30.1",
+    "matplotlib>=3.10.6",
+    "numpy>=2.3.3",
+    "pandas>=2.3.2",
+]

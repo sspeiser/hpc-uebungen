@@ -2,7 +2,7 @@
 
 In der Datei `amdahl-soln.ipynb` befindet sich ein Jupyter Notebook, das die folgenden Übungen löst. Bitte versuchen die Berechnung zuerst selbst - neben Python gibt es weitere Möglichkeiten das zu tun:
 - Von Hand: auf Papier und ggfs. mit einem Taschenrechner
-- Excel
+- Tabellenkalkulation (LibreOffice / Excel)
 - In einer beliebigen Programmiersprache
 
 <div class="alert alert-warning">
