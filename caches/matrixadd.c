@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
+
+#include <sys/timeb.h>
+#include <stdint.h>
+
+uint64_t system_current_time_millis()
+{
+#if defined(_WIN32) || defined(_WIN64)
+    struct _timeb timebuffer;
+    _ftime(&timebuffer);
+    return (uint64_t)(((timebuffer.time * 1000) + timebuffer.millitm));
+#else
+    struct timeb timebuffer;
+    ftime(&timebuffer);
+    return (uint64_t)(((timebuffer.time * 1000) + timebuffer.millitm));
+#endif
+}
+
 
 #define X 8192
 #define Y 8192
@@ -37,9 +53,8 @@ int main()
         }
     }
 
-    // Measure time
-    struct timeval start, end;
-    gettimeofday(&start, 0);
+     // Zeitmessen Start
+    uint64_t start = system_current_time_millis();
 
     // TODO: Optimize this loop
     for (j = 0; j < Y; j++)
@@ -50,11 +65,9 @@ int main()
         }
     }
 
-    gettimeofday(&end, 0);
+    uint64_t end = system_current_time_millis();
+    double secs = (end - start) / 1.0e3;
 
-    long sec = end.tv_sec - start.tv_sec;
-    long usec = end.tv_usec - start.tv_usec;
-    double secs = (sec + usec / 1000000.0);
     double flop = X * Y;
 
     printf("%.2f MFLOP\n%.2f sec\n", flop / 1000000.0, secs);
