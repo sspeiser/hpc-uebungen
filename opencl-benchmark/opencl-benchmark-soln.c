@@ -15,7 +15,7 @@
 
 #define N (1024*1024*32)
 
-#define CL_PROGRAM_FILE "benchmark-soln.cl"
+#define CL_PROGRAM_FILE "../benchmark-soln.cl"
 
 #define MAX_PLATFORMS 10
 #define MAX_DEVICES 10
