@@ -18,11 +18,28 @@ Wir verwenden folgende Umgebung:
 
 Es ist noch weitere Software installiert u.a. CLion als IDE und andere Compiler - diese können Sie verwenden aber auf eigene Gefahr.
 
+## Vorgehen: Eignes Repository anlegen
+
+- Gehen Sie auf https://gitlab.rz.hft-stuttgart.de/projects/new
+- Wählen Sie "Import Project"
+- Wählen Sie "Repository by URL"
+- Fügen Sie ein "https://github.com/sspeiser/hpc-uebungen"
+- Click auf "Create project"
+- Wenn es fertig ist öffnet sich die Repository Seite
+- Click auf "Code" und dann kopieren der URL unter "Clone with HTTPS"
+- Command Prompt öffnen (Link auf Desktop im LVIS)
+- Eingabe "C:" und ENTER
+- Eingabe "git clone " und dann per STRG-V die URL Ihres Gitlab Repositories einfügen
+- Mit ENTER bestätigen
+- Danach befinden sich alle Dateien unter C:/hpc-uebungen
+- Bevor Sie den rechner hinunterfahren mit git add, git commit und git push die Änderungen auf Gitlab speichern
+- Beim nächsten Start des Rechners wieder per git clone runterkopieren
+
 ## Vorgehen C-Programm ausführen
 
 1. Öffnen Sie Visual Studio Code
 2. File -> Open Folder und dann das Verzeichnis der Übung/des Beispiels öffnen indem die CMakeLists.txt ist, z.B. das Verzeichnis "caches"
-3. Bei Select Kit "Visual Studio" (o.ä.) auswählen
+3. Bei Select Kit "Visual Studio Enterprise 2022 Release - amd64" (o.ä.) auswählen
 4. **nicht** den "Play Button" ("Run C/C++ File") nutzen!
 5. Per Tastenkombi Ctrl+Shift+P wird die Kommandopalette aufgerufen, dort nutzen wir "CMake: Configure" (Projekt initial konfigurieren); "CMake: Build" (kompilieren); "CMake: Debug" und "CMake: Run without Debugging"
 6. Alternativ gehen die kleinen Knöpfe links unten
@@ -32,7 +49,7 @@ Es ist noch weitere Software installiert u.a. CLion als IDE und andere Compiler 
 ## Vorgehen Python
 
 1. Per Kommandozeile in das Verzeichnis der Übung/des Beispiels gehen, in dem die pyproject.toml, z.B. das Verzeichnis "amdahl"
-2. In Kommandozeile "uv init" ausführen
+2. In Kommandozeile "uv sync" ausführen
 3. Öffnen Sie Visual Studio Code
 4. File -> Open Folder und dann das Verzeichnis der Übung/des Beispiels auswählen
 5. Falls die ersten Schritte ausgelassen: Im integrierten Terminal "uv init" ausführen
