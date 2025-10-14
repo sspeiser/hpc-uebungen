@@ -3,7 +3,7 @@
 <div class="alert alert-info"><b>INFO</b><br />
 Roofline Modell:<br />
 <ul>
-<li><a href="https://moodle.rrze.uni-erlangen.de/pluginfile.php/12228/mod_resource/content/6/03_Roofline.pdf">Gute Kurzübersicht auf Folien 2-4 und 16-17 vom RRZE FAU Erlangen-Nürnberg</a></li>
+        <li>a href="https://blogs.fau.de/hager/files/2020/10/05_roofline.pdf">Kurzübersicht auf Folien FAU Erlangen-Nürnberg</a></li>
 <li>Erhöhen der Compute-Intensitiviy von Matrix-Multiplikation: Lecture 3, Folien 3 - 14, <a href="https://sites.google.com/lbl.gov/cs267-spr2021/home">CS 267 der UC Berkeley</a></li>
 <li>Detailliert zu Roofline Modell: Lecture 3, Folien 54 - 99, <a href="https://sites.google.com/lbl.gov/cs267-spr2021/home">CS 267 der UC Berkeley</a></li></ul>
 </div>
