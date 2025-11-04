@@ -38,6 +38,10 @@ int main()
         b[i] = 2.0;
     }
 
+
+    addition_seq();
+    addition_seq();
+
     printf("##############\n");
     measure("addition_seq", &addition_seq, N, 1, 3 * sizeof(float));
 }

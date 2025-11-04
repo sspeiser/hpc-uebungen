@@ -29,8 +29,9 @@ void addition_seq() {
 }
 
 void addition_par() {
-    #pragma omp parallel for
-    for(uint64_t i=0;i<N;i++) 
+    uint64_t i;
+    #pragma omp parallel for private(i)
+    for(i=0;i<N;i++) 
     { 
         c[i] = a[i] + b[i];
     }
@@ -44,8 +45,9 @@ void veclength_seq() {
 }
 
 void veclength_par() {
-    #pragma omp parallel for
-    for(uint64_t i=0;i<N;i++) 
+    uint64_t i;
+    #pragma omp parallel for private(i)
+    for(i=0;i<N;i++) 
     { 
         c[i] = sqrt(a[i] * a[i] + b[i] * b[i]);
     }
@@ -59,8 +61,9 @@ void stencil_seq() {
 }
 
 void stencil_par() {
-    #pragma omp parallel for
-    for(uint64_t i=0;i<N-8;i++) 
+    uint64_t i;
+    #pragma omp parallel for private(i)
+    for(i=0;i<N-8;i++) 
     {   
         c[i] = 0.9 * a[i] + 0.8 * a[i+1] + 0.7 * a[i+2] + 0.6 * a[i+3] + 0.5 * a[i+4] + 0.4 * a[i+5] + 0.3 * a[i+6] + 0.2 * a[i+7];
     }
@@ -76,8 +79,9 @@ void mixed_calc_seq() {
 }
 
 void mixed_calc_par() {
-    #pragma omp parallel for
-    for(uint64_t i=0;i<N;i++) 
+    uint64_t i;
+    #pragma omp parallel for private(i)
+    for(i=0;i<N;i++) 
     {   
         c[i] = 0.75 * a[i] + 0.25 * b[i];
         a[i] = 0.4 * a[i] + 0.2 * b[i];
@@ -95,6 +99,8 @@ int main()
         a[i] = 1.0;
         b[i] = 2.0;
     }
+    addition_seq();
+    addition_seq();
 
     printf("##############\n");
     measure("veclength_seq", &veclength_seq, N, 4, 3 * sizeof(float));
