@@ -22,10 +22,46 @@ typedef struct {
 CSR* matrix_to_csr(int n_rows, int n_cols, const double* matrix) {
     if (!matrix || n_rows <= 0 || n_cols <= 0) return NULL;
 
+    // Count non-zero values
+    int n_values = 0;
+    for (int i = 0; i < n_rows; i++) {
+        for (int j = 0; j < n_cols; j++) {
+            if (matrix[i * n_cols + j] != 0.0) n_values++;
+        }
+    }
+
     CSR* csr = malloc(sizeof(CSR));
     if (!csr) return NULL;
 
-    // TODO
+    csr->n_rows = n_rows;
+    csr->n_cols = n_cols;
+    csr->n_values = n_values;
+
+    csr->values = malloc(sizeof(double) * n_values);
+    csr->col_ind = malloc(sizeof(int) * n_values);
+    csr->row_ptr = malloc(sizeof(int) * (n_rows + 1));
+
+    if (!csr->values || !csr->col_ind || !csr->row_ptr) {
+        free(csr->values);
+        free(csr->col_ind);
+        free(csr->row_ptr);
+        free(csr);
+        return NULL;
+    }
+
+    int k = 0;
+    for (int i = 0; i < n_rows; i++) {
+        csr->row_ptr[i] = k;
+        for (int j = 0; j < n_cols; j++) {
+            double val = matrix[i * n_cols + j];
+            if (val != 0.0) {
+                csr->values[k] = val;
+                csr->col_ind[k] = j;
+                k++;
+            }
+        }
+    }
+    csr->row_ptr[n_rows] = k; // end of last row
 
     return csr;
 }
@@ -57,7 +93,13 @@ int csr_times_vector(const CSR* csr, const double* vector, int n_vector,
     if (n_vector != csr->n_cols) return -1;    // vector length mismatch
     if (n_result != csr->n_rows) return -1;    // result length mismatch
 
-    // TODO
+    for (int i = 0; i < csr->n_rows; i++) {
+        double sum = 0;
+        for (int j = csr->row_ptr[i]; j < csr->row_ptr[i + 1]; j++) {
+            sum += csr->values[j] * vector[csr->col_ind[j]];
+        }
+        result[i] = sum;
+    }
 
     return 0; // success
 }
