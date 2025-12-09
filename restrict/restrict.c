@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Works correctly without restrict - error with restrict
 int shift(int* restrict a, int* restrict b , int n) {
     for(int i=1; i<n; i++) {
         a[i] = b[i-1];
