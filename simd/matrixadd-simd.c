@@ -45,8 +45,8 @@ int main()
 
     // TODO: SIMD Optimize Add
     int size = X * Y;
-    float *a1d = a[0];
-    float *b1d = b[0];
+    float * restrict a1d = a[0];
+    float * restrict b1d = b[0];
     
     // Ohne SIMD: 1 Float Point pro Schritt
     for(int i=0;i<size;i+=1) {

@@ -29,7 +29,7 @@ int main()
     // Read color JPG into byte array "img"
     // Array contains "width" x "height" pixels each consisting of "channels" colors/bytes
     int width, height, channels;
-    unsigned char *img = stbi_load("../../../tamanna-rumee-vaTsR-ghLog-unsplash.jpg", &width, &height, &channels, 0);
+    unsigned char *img = stbi_load("../tamanna-rumee-vaTsR-ghLog-unsplash.jpg", &width, &height, &channels, 0);
     if (img == NULL)
     {
         printf("Err: loading image\n");
@@ -40,6 +40,11 @@ int main()
     
     // Allocate target array for grayscale image
     unsigned char *gray = (unsigned char *) malloc(width * height);
+    for(int y = 0; y < height; y++) {
+        for(int x = 0; x < width; x++) {
+            gray[y * width + x] = 0;
+        }
+    }
 
     // Zeitmessen Start
     uint64_t start = system_current_time_millis();
@@ -66,6 +71,10 @@ int main()
     double mflops = flop / 1000000.0 / sec;
     printf("%8.2f MFLOP/s\n", mflops);
 
+    double gbytes = width * height * 4 / 1000.0 / 1000.0 / sec;
+    printf("%8.2f GByte/s\n", gbytes);
+    double kbyte = width * height * 4 / 1000.0;
+    printf("%8.2f kByte\n", kbyte);
 
     stbi_write_jpg("grayscale.jpg", width, height, 1, gray, 95);
 }

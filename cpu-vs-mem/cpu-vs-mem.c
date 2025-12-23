@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N (int64_t) 8192l * (int64_t) 8192l * (int64_t) 8l
+#define N (int64_t) 8192l * (int64_t) 8192l * (int64_t) 16l
 
 float *a;
 float *b;
@@ -27,6 +27,17 @@ void addition_seq() {
         c[i] = a[i] + b[i];
     }
 }
+
+
+void addition_par() {
+    #pragma omp parallel for
+    for(int64_t i=0;i<N;i++) 
+    { 
+        c[i] = a[i] + b[i];
+    }
+}
+
+
 int main()
 {
     a = malloc(N * sizeof(float));
@@ -44,4 +55,5 @@ int main()
 
     printf("##############\n");
     measure("addition_seq", &addition_seq, N, 1, 3 * sizeof(float));
+    measure("addition_par", &addition_par, N, 1, 3 * sizeof(float));
 }
